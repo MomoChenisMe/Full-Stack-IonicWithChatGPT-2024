@@ -105,7 +105,7 @@ export class VoicerecordingComponent {
         // 停止錄音
         const recordResult = await Microphone.stopRecording();
         // 串接Audio API
-        // this.sendAudio(recordResult);
+        this.sendAudio(recordResult);
       }
     });
     effect(async () => {
