@@ -18,7 +18,7 @@ import {
 } from 'rxjs';
 import { IonIcon, IonRippleEffect } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { batteryCharging, micOutline } from 'ionicons/icons';
+import { micOutline } from 'ionicons/icons';
 import { AudioRecording, Microphone } from '@mozartec/capacitor-microphone';
 import {
   Gesture,
@@ -179,15 +179,7 @@ export class VoicerecordingComponent {
     formData.append('model', 'whisper-1');
     formData.append('language', 'en');
     this.httpClient
-      .post<AudioResponseModel>(
-        'https://api.openai.com/v1/audio/transcriptions',
-        formData,
-        {
-          headers: {
-            Authorization: 'Bearer {YOUR API KEY}',
-          },
-        }
-      )
+      .post<AudioResponseModel>('audio/transcriptions', formData)
       .subscribe((response) => {
         alert(response.text);
       });
