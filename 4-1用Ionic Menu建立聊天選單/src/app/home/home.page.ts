@@ -32,4 +32,6 @@ import { ChatmenubuttonComponent } from '../components/chatmenubutton/chatmenubu
     ChatmenuComponent,
   ],
 })
-export class HomePage {}
+export class HomePage {
+  constructor() {}
+}

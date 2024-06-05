@@ -10,7 +10,12 @@ import { routes } from './app/app.routes';
 import { AppComponent } from './app/app.component';
 import { environment } from './environments/environment';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { loadingHttpInterceptor } from './app/httpInterceptors/http.interceptor.functions';
+import {
+  bearerTokenHttpInterceptor,
+  loadingHttpInterceptor,
+  openAIBetaHeaderHttpInterceptor,
+  openAIBaseURLHttpInterceptor,
+} from './app/httpInterceptors/http.interceptor.functions';
 
 if (environment.production) {
   enableProdMode();
@@ -22,7 +27,12 @@ bootstrapApplication(AppComponent, {
     provideIonicAngular(),
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([loadingHttpInterceptor]) // 加入攔截器
+      withInterceptors([
+        loadingHttpInterceptor,
+        bearerTokenHttpInterceptor,
+        openAIBetaHeaderHttpInterceptor,
+        openAIBaseURLHttpInterceptor,
+      ]) // 加入攔截器
     ), // 加入HttpClient的提供者
   ],
 });
