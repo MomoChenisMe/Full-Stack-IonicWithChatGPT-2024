@@ -18,7 +18,7 @@ import {
 } from 'rxjs';
 import { IonIcon, IonRippleEffect } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { batteryCharging, micOutline } from 'ionicons/icons';
+import { micOutline } from 'ionicons/icons';
 import { AudioRecording, Microphone } from '@mozartec/capacitor-microphone';
 import {
   Gesture,
