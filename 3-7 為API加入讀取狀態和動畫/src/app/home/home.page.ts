@@ -1,6 +1,4 @@
-import { StatusService } from './../services/status.service';
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   IonHeader,
   IonToolbar,
@@ -11,7 +9,6 @@ import {
 } from '@ionic/angular/standalone';
 import { Robot3dComponent } from '../components/robot3d/robot3d.component';
 import { VoicerecordingComponent } from '../components/voicerecording/voicerecording.component';
-import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -29,26 +26,6 @@ import { switchMap } from 'rxjs';
     VoicerecordingComponent,
   ],
 })
-export class HomePage implements OnInit {
-  constructor(
-    private _statusService: StatusService,
-    private httpClient: HttpClient
-  ) {}
-
-  ngOnInit() {
-    this.httpClient
-      .get('https://localhost:7086/AIEnglishTurtor')
-      .pipe(
-        switchMap(() =>
-          this.httpClient.get('https://localhost:7086/AIEnglishTurtor')
-        ),
-        switchMap(() =>
-          this.httpClient.get('https://localhost:7086/AIEnglishTurtor')
-        ),
-        switchMap(() =>
-          this.httpClient.get('https://localhost:7086/AIEnglishTurtor')
-        )
-      )
-      .subscribe();
-  }
+export class HomePage {
+  constructor() {}
 }
