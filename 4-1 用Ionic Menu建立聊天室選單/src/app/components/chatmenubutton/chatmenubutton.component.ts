@@ -20,6 +20,7 @@ export class ChatmenubuttonComponent {
     addIcons({ menuOutline });
   }
 
+  // 開啟聊天室選單
   onOpenCloseMenuClick() {
     this.menuCtrl.open('chat-menu');
   }

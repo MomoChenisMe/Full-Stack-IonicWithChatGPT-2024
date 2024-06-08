@@ -46,16 +46,19 @@ export class ChatmenuComponent {
     addIcons({ addCircleOutline, trashOutline, chatbubblesOutline });
   }
 
+  // 選擇聊天室
   onChatRoomSelect(chatroomId: string) {
     this.sqlitedbService.selectChatRoom(chatroomId);
     this.menuCtrl.close();
   }
 
+  // 建立聊天室
   async onChatRoomCreate() {
     this.sqlitedbService.createChatRoom();
     this.menuCtrl.close();
   }
 
+  // 刪除聊天室
   async onChatRoomDelete(chatroomId: string) {
     await this.sqlitedbService.deleteChatRoom(chatroomId);
   }
