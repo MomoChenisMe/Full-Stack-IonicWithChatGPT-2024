@@ -26,7 +26,7 @@ export class AppComponent implements OnDestroy {
     private platform: Platform,
     private sqlitedbService: SqlitedbService
   ) {
-    //初始化設定
+    // 初始化設定
     this.initAppSettingAndPlugin();
   }
 
@@ -37,7 +37,7 @@ export class AppComponent implements OnDestroy {
   }
 
   private async initAppSettingAndPlugin() {
-    //SQLite初始化
+    // SQLite初始化
     await this.sqlitedbService.openSQLiteDBAndDoInitialize();
   }
 }
