@@ -30,7 +30,7 @@
       >
         <div
           class="flex-1 flex flex-row items-center"
-          (click)="onChatRoomSelect(item.chatroomId)"
+          (click)="onChatRoomSelect(item.chatRoomId)"
         >
           <ion-icon
             class="flex-none text-xl"
@@ -40,7 +40,7 @@
         </div>
         <div
           class="flex-none flex items-center p-2"
-          (click)="onChatRoomDelete(item.chatroomId)"
+          (click)="onChatRoomDelete(item.chatRoomId)"
         >
           @if (!item.isSelected) {
           <ion-icon

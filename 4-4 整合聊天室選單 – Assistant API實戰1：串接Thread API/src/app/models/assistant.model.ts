@@ -1,9 +1,9 @@
-export interface CreateThreadResponseModel {
+export interface ThreadObjectModel {
   id: string;
   object: string;
   created_at: number;
-  metadata: {};
-  tool_resources: {};
+  metadata: any;
+  tool_resources: any;
 }
 
 export interface DeleteThreadResponseModel {

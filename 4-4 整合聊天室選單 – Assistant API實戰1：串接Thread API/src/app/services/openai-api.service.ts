@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
-  TranscriptionRequestModel,
+  MicrophoneRecordDataModel,
   TranscriptionResponseModel,
 } from '../models/audio.model';
 import { Observable, firstValueFrom } from 'rxjs';
 import {
-  CreateThreadResponseModel,
+  ThreadObjectModel,
   DeleteThreadResponseModel,
 } from '../models/assistant.model';
 
@@ -27,14 +27,14 @@ export class OpenaiApiService {
   }
 
   createAudioTranscription(
-    transcriptionData: TranscriptionRequestModel
+    microphoneRecordData: MicrophoneRecordDataModel
   ): Observable<TranscriptionResponseModel> {
     const blob = this.convertBase64ToBlob(
-      transcriptionData.base64String,
-      transcriptionData.mimeType
+      microphoneRecordData.base64String,
+      microphoneRecordData.mimeType
     );
     const formData = new FormData();
-    formData.append('file', blob, `audio${transcriptionData.format}`);
+    formData.append('file', blob, `audio${microphoneRecordData.format}`);
     formData.append('model', 'whisper-1');
     formData.append('language', 'en');
     return this.httpClient.post<TranscriptionResponseModel>(
@@ -43,11 +43,11 @@ export class OpenaiApiService {
     );
   }
 
-  createThread(): Observable<CreateThreadResponseModel> {
-    return this.httpClient.post<CreateThreadResponseModel>('threads', {});
+  createThread(): Observable<ThreadObjectModel> {
+    return this.httpClient.post<ThreadObjectModel>('threads', {});
   }
 
-  createThreadAsync(): Promise<CreateThreadResponseModel> {
+  createThreadAsync(): Promise<ThreadObjectModel> {
     return firstValueFrom(this.createThread());
   }
 

@@ -51,8 +51,8 @@ export class ChatmenuComponent {
   }
 
   // 選擇聊天室
-  onChatRoomSelect(chatroomId: string) {
-    this.sqlitedbService.selectChatRoom(chatroomId);
+  onChatRoomSelect(chatRoomId: string) {
+    this.sqlitedbService.selectChatRoom(chatRoomId);
     this.menuCtrl.close();
   }
 
@@ -63,12 +63,12 @@ export class ChatmenuComponent {
   }
 
   // 刪除聊天室
-  async onChatRoomDelete(chatroomId: string) {
+  async onChatRoomDelete(chatRoomId: string) {
     await this.alertService.deleteConfirm({
       message: '確定要刪除聊天室?',
       confirmHandler: (data) => {
         console.log(data);
-        this.sqlitedbService.deleteChatRoom(chatroomId);
+        this.sqlitedbService.deleteChatRoom(chatRoomId);
       },
     });
   }

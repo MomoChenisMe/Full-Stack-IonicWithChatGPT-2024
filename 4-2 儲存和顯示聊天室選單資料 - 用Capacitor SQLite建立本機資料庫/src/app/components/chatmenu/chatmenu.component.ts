@@ -47,8 +47,8 @@ export class ChatmenuComponent {
   }
 
   // 選擇聊天室
-  onChatRoomSelect(chatroomId: string) {
-    this.sqlitedbService.selectChatRoom(chatroomId);
+  onChatRoomSelect(chatRoomId: string) {
+    this.sqlitedbService.selectChatRoom(chatRoomId);
     this.menuCtrl.close();
   }
 
@@ -59,7 +59,7 @@ export class ChatmenuComponent {
   }
 
   // 刪除聊天室
-  async onChatRoomDelete(chatroomId: string) {
-    await this.sqlitedbService.deleteChatRoom(chatroomId);
+  async onChatRoomDelete(chatRoomId: string) {
+    await this.sqlitedbService.deleteChatRoom(chatRoomId);
   }
 }

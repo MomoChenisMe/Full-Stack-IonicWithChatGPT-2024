@@ -1,5 +1,5 @@
 export interface ChatRoomModel {
-  chatroomId: string;
+  chatRoomId: string;
   name: string;
   isSelected: boolean;
   timestamp: Date;
