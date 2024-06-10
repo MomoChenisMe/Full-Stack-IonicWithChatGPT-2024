@@ -19,7 +19,9 @@
     >
       <div class="flex-grow">
         <!-- 錄音按鈕 -->
-        <app-voicerecording></app-voicerecording>
+        <app-voicerecording
+          (voiceRecordFinished)="onVoiceRecordFinished($event)"
+        ></app-voicerecording>
       </div>
     </div>
   </div>

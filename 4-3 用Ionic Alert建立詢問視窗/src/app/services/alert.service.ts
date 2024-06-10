@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AlertController } from '@ionic/angular/standalone';
-import { ConfirmAlertOptions } from './alert.model';
+import { ConfirmAlertOptions } from '../models/alert.model';
 
 @Injectable({
   providedIn: 'root',

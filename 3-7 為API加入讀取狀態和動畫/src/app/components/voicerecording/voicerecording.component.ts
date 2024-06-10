@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   effect,
+  output,
   signal,
   viewChild,
 } from '@angular/core';
@@ -27,8 +28,6 @@ import {
   Animation,
   AnimationController,
 } from '@ionic/angular';
-import { HttpClient } from '@angular/common/http';
-import { AudioResponseModel } from './voicerecording.model';
 import { StatusService } from 'src/app/services/status.service';
 
 @Component({
@@ -77,11 +76,14 @@ export class VoicerecordingComponent {
       initialValue: { minutes: '00', seconds: '00' },
     }
   );
+  // 錄音完成事件
+  public voiceRecordFinished = output<AudioRecording>();
+  // 讀取狀態
   public loadingState = this.statusService.loadingState;
+
   constructor(
     private gestureCtrl: GestureController,
     private animationCtrl: AnimationController,
-    private httpClient: HttpClient,
     private statusService: StatusService
   ) {
     addIcons({ micOutline });
@@ -104,8 +106,8 @@ export class VoicerecordingComponent {
         this.scalingAnimation.stop();
         // 停止錄音
         const recordResult = await Microphone.stopRecording();
-        // 串接Audio API
-        this.sendAudio(recordResult);
+        // 發送錄音完成事件
+        this.voiceRecordFinished.emit(recordResult);
       }
     });
     effect(async () => {
@@ -156,40 +158,5 @@ export class VoicerecordingComponent {
     } else {
       return false;
     }
-  }
-
-  convertBase64ToBlob(base64: string, contentType: string): Blob {
-    const byteCharacters = atob(base64);
-    const byteNumbers = new Array(byteCharacters.length);
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-    const byteArray = new Uint8Array(byteNumbers);
-    return new Blob([byteArray], { type: contentType });
-  }
-
-  // 串接Audio API
-  sendAudio(audioRecording: AudioRecording) {
-    const blob = this.convertBase64ToBlob(
-      audioRecording.base64String ?? '',
-      audioRecording.mimeType ?? 'audio/aac'
-    );
-    const formData = new FormData();
-    formData.append('file', blob, `audio${audioRecording.format ?? '.m4a'}`);
-    formData.append('model', 'whisper-1');
-    formData.append('language', 'en');
-    this.httpClient
-      .post<AudioResponseModel>(
-        'https://api.openai.com/v1/audio/transcriptions',
-        formData,
-        {
-          headers: {
-            Authorization: 'Bearer {YOUR API KEY}',
-          },
-        }
-      )
-      .subscribe((response) => {
-        alert(response.text);
-      });
   }
 }

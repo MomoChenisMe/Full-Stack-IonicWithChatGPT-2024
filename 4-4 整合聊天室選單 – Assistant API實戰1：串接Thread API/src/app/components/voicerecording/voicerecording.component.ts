@@ -3,6 +3,7 @@ import {
   Component,
   ElementRef,
   effect,
+  output,
   signal,
   viewChild,
 } from '@angular/core';
@@ -28,7 +29,6 @@ import {
   AnimationController,
 } from '@ionic/angular';
 import { StatusService } from 'src/app/services/status.service';
-import { OpenaiApiService } from 'src/app/services/openai-api.service';
 
 @Component({
   selector: 'app-voicerecording',
@@ -76,12 +76,15 @@ export class VoicerecordingComponent {
       initialValue: { minutes: '00', seconds: '00' },
     }
   );
+  // 錄音完成事件
+  public voiceRecordFinished = output<AudioRecording>();
+  // 讀取狀態
   public loadingState = this.statusService.loadingState;
+
   constructor(
     private gestureCtrl: GestureController,
     private animationCtrl: AnimationController,
-    private statusService: StatusService,
-    private openaiApiService: OpenaiApiService
+    private statusService: StatusService
   ) {
     addIcons({ micOutline });
     effect(() => {
@@ -103,8 +106,8 @@ export class VoicerecordingComponent {
         this.scalingAnimation.stop();
         // 停止錄音
         const recordResult = await Microphone.stopRecording();
-        // 串接Audio API
-        this.sendAudio(recordResult);
+        // 發送錄音完成事件
+        this.voiceRecordFinished.emit(recordResult);
       }
     });
     effect(async () => {
@@ -155,18 +158,5 @@ export class VoicerecordingComponent {
     } else {
       return false;
     }
-  }
-
-  // 串接Audio API
-  sendAudio(audioRecording: AudioRecording) {
-    this.openaiApiService
-      .createAudioTranscription({
-        base64String: audioRecording.base64String ?? '',
-        mimeType: audioRecording.mimeType ?? 'audio/aac',
-        format: audioRecording.format ?? '.m4a',
-      })
-      .subscribe((response) => {
-        alert(response.text);
-      });
   }
 }

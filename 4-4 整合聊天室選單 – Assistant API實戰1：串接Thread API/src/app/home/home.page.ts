@@ -12,6 +12,9 @@ import { Robot3dComponent } from '../components/robot3d/robot3d.component';
 import { VoicerecordingComponent } from '../components/voicerecording/voicerecording.component';
 import { ChatmenuComponent } from '../components/chatmenu/chatmenu.component';
 import { ChatmenubuttonComponent } from '../components/chatmenubutton/chatmenubutton.component';
+import { HttpClient } from '@angular/common/http';
+import { AudioRecording } from '@mozartec/capacitor-microphone';
+import { OpenaiApiService } from '../services/openai-api.service';
 
 @Component({
   selector: 'app-home',
@@ -32,4 +35,19 @@ import { ChatmenubuttonComponent } from '../components/chatmenubutton/chatmenubu
     ChatmenuComponent,
   ],
 })
-export class HomePage {}
+export class HomePage {
+  constructor(private openaiApiService: OpenaiApiService) {}
+
+  onVoiceRecordFinished(audioRecording: AudioRecording) {
+    // 串接Audio API
+    this.openaiApiService
+      .createAudioTranscription({
+        base64String: audioRecording.base64String ?? '',
+        mimeType: audioRecording.mimeType ?? 'audio/aac',
+        format: audioRecording.format ?? '.m4a',
+      })
+      .subscribe((response) => {
+        alert(response.text);
+      });
+  }
+}

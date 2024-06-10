@@ -12,6 +12,9 @@ import { Robot3dComponent } from '../components/robot3d/robot3d.component';
 import { VoicerecordingComponent } from '../components/voicerecording/voicerecording.component';
 import { ChatmenuComponent } from '../components/chatmenu/chatmenu.component';
 import { ChatmenubuttonComponent } from '../components/chatmenubutton/chatmenubutton.component';
+import { HttpClient } from '@angular/common/http';
+import { AudioRecording } from '@mozartec/capacitor-microphone';
+import { AudioResponseModel } from '../models/audio.model';
 
 @Component({
   selector: 'app-home',
@@ -32,4 +35,33 @@ import { ChatmenubuttonComponent } from '../components/chatmenubutton/chatmenubu
     ChatmenuComponent,
   ],
 })
-export class HomePage {}
+export class HomePage {
+  constructor(private httpClient: HttpClient) {}
+
+  private convertBase64ToBlob(base64: string, contentType: string): Blob {
+    const byteCharacters = atob(base64);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    return new Blob([byteArray], { type: contentType });
+  }
+
+  onVoiceRecordFinished(audioRecording: AudioRecording) {
+    // 串接Audio API
+    const blob = this.convertBase64ToBlob(
+      audioRecording.base64String ?? '',
+      audioRecording.mimeType ?? 'audio/aac'
+    );
+    const formData = new FormData();
+    formData.append('file', blob, `audio${audioRecording.format ?? '.m4a'}`);
+    formData.append('model', 'whisper-1');
+    formData.append('language', 'en');
+    this.httpClient
+      .post<AudioResponseModel>('audio/transcriptions', formData)
+      .subscribe((response) => {
+        alert(response.text);
+      });
+  }
+}

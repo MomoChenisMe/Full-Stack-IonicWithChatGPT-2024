@@ -4,7 +4,7 @@ import {
   CapacitorSQLite,
   SQLiteDBConnection,
 } from '@capacitor-community/sqlite';
-import { ChatRoomModel } from './sqlitedb.model';
+import { ChatRoomModel } from '../models/sqlitedb.model';
 
 // 定義資料庫名稱
 const DB_NAME = 'aiconversation';
