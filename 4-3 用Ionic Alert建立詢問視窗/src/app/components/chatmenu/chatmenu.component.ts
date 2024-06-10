@@ -40,7 +40,7 @@ import { AlertService } from 'src/app/services/alert.service';
   standalone: true,
 })
 export class ChatmenuComponent {
-  chatRoomList = this.sqlitedbService.chatRoomListReadOnly;
+  public chatRoomList = this.sqlitedbService.chatRoomListReadOnly;
 
   constructor(
     private sqlitedbService: SqlitedbService,
