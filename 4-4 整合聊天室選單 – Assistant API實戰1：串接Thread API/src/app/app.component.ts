@@ -2,6 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { IonApp, IonRouterOutlet, Platform } from '@ionic/angular/standalone';
 import { SqlitedbService } from './services/sqlitedb.service';
 import { Subscription } from 'rxjs';
+import { OpenaiApiService } from './services/openai-api.service';
 
 @Component({
   selector: 'app-root',
@@ -24,7 +25,8 @@ export class AppComponent implements OnDestroy {
 
   constructor(
     private platform: Platform,
-    private sqlitedbService: SqlitedbService
+    private sqlitedbService: SqlitedbService,
+    private openaiApiService: OpenaiApiService
   ) {
     // 初始化設定
     this.initAppSettingAndPlugin();
@@ -39,5 +41,14 @@ export class AppComponent implements OnDestroy {
   private async initAppSettingAndPlugin() {
     // SQLite初始化
     await this.sqlitedbService.openSQLiteDBAndDoInitialize();
+    // 檢查是否有初始資料
+    const hasLeastOneChatRoom =
+      await this.sqlitedbService.ensureAtLeastOneChatRoom();
+    if (!hasLeastOneChatRoom) {
+      // 與OpenAI API建立一個新的Thread物件
+      const newThreadObject = await this.openaiApiService.createThreadAsync();
+      // 新增一個聊天室
+      await this.sqlitedbService.createChatRoom(newThreadObject.id);
+    }
   }
 }

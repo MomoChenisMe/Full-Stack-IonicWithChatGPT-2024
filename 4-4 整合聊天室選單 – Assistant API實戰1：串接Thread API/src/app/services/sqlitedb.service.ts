@@ -1,5 +1,4 @@
-import { OpenaiApiService } from 'src/app/services/openai-api.service';
-import { Injectable, signal } from '@angular/core';
+import { Injectable, computed, signal } from '@angular/core';
 import {
   SQLiteConnection,
   CapacitorSQLite,
@@ -32,8 +31,11 @@ export class SqlitedbService {
   private chatRoomList = signal<ChatRoomModel[]>([]);
   // Readonly的Signal
   public chatRoomListReadOnly = this.chatRoomList.asReadonly();
-
-  constructor(private openaiApiService: OpenaiApiService) {}
+  // 取得選中的聊天室ID
+  public selectChatRoomId = computed(() => {
+    return this.chatRoomList().find((chatRoom) => chatRoom.isSelected)
+      ?.chatRoomId;
+  });
 
   public async openSQLiteDBAndDoInitialize() {
     try {
@@ -48,41 +50,21 @@ export class SqlitedbService {
       await this.db.open();
       // 執行聊天室選單資料表的建立
       await this.db.execute(CHATROOM_SCHEMA);
-      // 確保至少存在一個聊天室
-      await this.ensureAtLeastOneChatRoom();
-      // 讀取聊天室選單資料
-      await this.loadChatRoomData();
     } catch (error) {
       console.error('Error initializing plugin:', error);
     }
   }
 
-  private async ensureAtLeastOneChatRoom() {
+  public async ensureAtLeastOneChatRoom() {
     try {
       // 查詢聊天室選單資料表中的數量
       const chatCount = await this.db.query(
         'SELECT COUNT(*) AS count FROM CHATROOM'
       );
-      // 若沒有任何資料，則建立一個初始的聊天室
-      if (chatCount.values && chatCount.values[0].count === 0) {
-        await this.createInitialChatRoom();
-      }
+      return chatCount.values && chatCount.values[0].count === 0;
     } catch (error) {
       console.error('Error ensuring at least one chat room:', error);
-    }
-  }
-
-  private async createInitialChatRoom() {
-    try {
-      // 與OpenAI API建立一個新的Thread物件
-      const newThreadObject = await this.openaiApiService.createThreadAsync();
-      // 建立初始的聊天室
-      const query =
-        'INSERT INTO CHATROOM (chatRoomId, name, isSelected) VALUES (?, ?, ?)';
-      const values = [newThreadObject.id, '對話聊天室', 1];
-      await this.db.run(query, values);
-    } catch (error) {
-      console.error('Error adding initial chat room:', error);
+      return false;
     }
   }
 
@@ -131,16 +113,14 @@ export class SqlitedbService {
     }
   }
 
-  public async createChatRoom() {
+  public async createChatRoom(newChatRoomId: string) {
     try {
-      // 與OpenAI API建立一個新的Thread物件
-      const newThreadObject = await this.openaiApiService.createThreadAsync();
       // 將所有聊天室的選擇狀態更新為未選擇
       await this.updateAllChatRoomDataToUnSelected();
       // 新增一個新的聊天室並將其設定為已選擇
       const query =
         'INSERT INTO CHATROOM (chatRoomId, name, isSelected) VALUES (?, ?, ?)';
-      const values = [newThreadObject.id, '對話聊天室', 1];
+      const values = [newChatRoomId, '對話聊天室', 1];
       await this.db.run(query, values);
       // 重新讀取聊天室選單資料
       await this.loadChatRoomData();
@@ -167,10 +147,6 @@ export class SqlitedbService {
 
   public async deleteChatRoom(chatRoomId: string) {
     try {
-      // 與OpenAI API建立一個新的Thread物件
-      const deleteThreadObject = await this.openaiApiService.deleteThreadAsync(
-        chatRoomId
-      );
       // 刪除聊天室
       const deleteChatRoomQuery = 'DELETE FROM CHATROOM WHERE chatRoomId = ?';
       await this.db.run(deleteChatRoomQuery, [chatRoomId]);

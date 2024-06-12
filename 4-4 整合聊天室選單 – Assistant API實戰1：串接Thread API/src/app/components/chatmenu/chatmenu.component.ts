@@ -19,6 +19,7 @@ import {
   chatbubblesOutline,
 } from 'ionicons/icons';
 import { AlertService } from 'src/app/services/alert.service';
+import { OpenaiApiService } from 'src/app/services/openai-api.service';
 
 @Component({
   selector: 'app-chatmenu',
@@ -45,7 +46,8 @@ export class ChatmenuComponent {
   constructor(
     private sqlitedbService: SqlitedbService,
     private menuCtrl: MenuController,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private openaiApiService: OpenaiApiService
   ) {
     addIcons({ addCircleOutline, trashOutline, chatbubblesOutline });
   }
@@ -58,7 +60,9 @@ export class ChatmenuComponent {
 
   // 建立聊天室
   async onChatRoomCreate() {
-    this.sqlitedbService.createChatRoom();
+    // 與OpenAI API建立一個新的Thread物件
+    const newThreadObject = await this.openaiApiService.createThreadAsync();
+    this.sqlitedbService.createChatRoom(newThreadObject.id);
     this.menuCtrl.close();
   }
 
@@ -66,9 +70,10 @@ export class ChatmenuComponent {
   async onChatRoomDelete(chatRoomId: string) {
     await this.alertService.deleteConfirm({
       message: '確定要刪除聊天室?',
-      confirmHandler: (data) => {
-        console.log(data);
-        this.sqlitedbService.deleteChatRoom(chatRoomId);
+      confirmHandler: async (data) => {
+        // 與OpenAI API刪除指定的Thread物件
+        await this.openaiApiService.deleteThreadAsync(chatRoomId);
+        await this.sqlitedbService.deleteChatRoom(chatRoomId);
       },
     });
   }
