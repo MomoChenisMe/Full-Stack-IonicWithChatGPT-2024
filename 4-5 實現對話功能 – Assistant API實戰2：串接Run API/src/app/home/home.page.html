@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- 聊天室選單按鈕 -->
+    <app-chatmenubutton></app-chatmenubutton>
+  </ion-toolbar>
+</ion-header>
+
+<!-- 聊天室選單 -->
+<app-chatmenu></app-chatmenu>
+
+<div id="main-content" class="w-full h-full bg-white">
+  <div class="flex flex-col w-full h-full">
+    <div class="relative flex flex-col w-full h-full">
+      <!-- 3D機器人動畫 -->
+      <app-robot3d class="flex-grow flex-shrink w-full pt-5 pb-5"></app-robot3d>
+    </div>
+    <div
+      class="flex-none flex flex-row justify-between items-center pb-10 relative"
+    >
+      <div class="flex-grow">
+        <!-- 錄音按鈕 -->
+        <app-voicerecording
+          (voiceRecordFinished)="onVoiceRecordFinished($event)"
+        ></app-voicerecording>
+      </div>
+    </div>
+  </div>
+</div>

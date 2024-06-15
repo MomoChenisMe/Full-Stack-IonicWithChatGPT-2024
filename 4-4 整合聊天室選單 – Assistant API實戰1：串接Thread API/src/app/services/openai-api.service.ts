@@ -43,6 +43,7 @@ export class OpenaiApiService {
     );
   }
 
+  // 建立Thread物件
   createThread(): Observable<ThreadObjectModel> {
     return this.httpClient.post<ThreadObjectModel>('threads', {});
   }
@@ -51,6 +52,7 @@ export class OpenaiApiService {
     return firstValueFrom(this.createThread());
   }
 
+  // 刪除指定的Thread物件
   deleteThread(threadId: string): Observable<DeleteThreadResponseModel> {
     return this.httpClient.delete<DeleteThreadResponseModel>(
       `threads/${threadId}`
