@@ -42,7 +42,7 @@ export class HomePage {
   ) {}
 
   onVoiceRecordFinished(audioRecording: AudioRecording) {
-    // 串接Audio API
+    // 執行完整對話
     this.openaiApiService
       .doEnglishConversation(
         {

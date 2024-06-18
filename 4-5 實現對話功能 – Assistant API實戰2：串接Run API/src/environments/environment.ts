@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   openAIAPIKey: '{API Key}',
-  assistandId: 'asst_ZNZqRi6hAu3npscxx8ojEcJ8',
+  assistandId: 'asst_oPFfEVBWQHSo2EcdGcLx0DhY',
 };
 
 /*
