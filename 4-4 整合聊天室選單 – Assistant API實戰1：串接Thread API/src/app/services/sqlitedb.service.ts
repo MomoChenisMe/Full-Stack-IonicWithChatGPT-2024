@@ -68,7 +68,7 @@ export class SqlitedbService {
     }
   }
 
-  private async loadChatRoomData() {
+  public async loadChatRoomData() {
     try {
       // 讀取所有聊天室選單資料
       const chatroomDbData = await this.db.query(

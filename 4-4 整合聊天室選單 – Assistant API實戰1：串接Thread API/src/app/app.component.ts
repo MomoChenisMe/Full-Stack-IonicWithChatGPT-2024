@@ -44,11 +44,14 @@ export class AppComponent implements OnDestroy {
     // 檢查是否有初始資料
     const hasLeastOneChatRoom =
       await this.sqlitedbService.ensureAtLeastOneChatRoom();
-    if (!hasLeastOneChatRoom) {
+    if (hasLeastOneChatRoom) {
       // 與OpenAI API建立一個新的Thread物件
       const newThreadObject = await this.openaiApiService.createThreadAsync();
       // 新增一個聊天室
       await this.sqlitedbService.createChatRoom(newThreadObject.id);
+    } else {
+      // 有資料就讀取聊天室資料
+      await this.sqlitedbService.loadChatRoomData();
     }
   }
 }
