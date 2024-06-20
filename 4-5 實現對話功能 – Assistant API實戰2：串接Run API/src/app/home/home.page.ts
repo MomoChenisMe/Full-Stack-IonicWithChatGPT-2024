@@ -15,6 +15,8 @@ import { ChatmenubuttonComponent } from '../components/chatmenubutton/chatmenubu
 import { AudioRecording } from '@mozartec/capacitor-microphone';
 import { OpenaiApiService } from '../services/openai-api.service';
 import { SqlitedbService } from '../services/sqlitedb.service';
+import { switchMap } from 'rxjs';
+import { MicrophoneRecordDataModel } from '../models/audio.model';
 
 @Component({
   selector: 'app-home',
@@ -42,15 +44,30 @@ export class HomePage {
   ) {}
 
   onVoiceRecordFinished(audioRecording: AudioRecording) {
+    const microphoneRecordData: MicrophoneRecordDataModel = {
+      base64String: audioRecording.base64String ?? '',
+      mimeType: audioRecording.mimeType ?? 'audio/aac',
+      format: audioRecording.format ?? '.m4a',
+    };
+    const threadId = this.sqlitedbService.selectChatRoomId() ?? '';
+
     // 執行完整對話
     this.openaiApiService
-      .doEnglishConversation(
-        {
-          base64String: audioRecording.base64String ?? '',
-          mimeType: audioRecording.mimeType ?? 'audio/aac',
-          format: audioRecording.format ?? '.m4a',
-        },
-        this.sqlitedbService.selectChatRoomId() ?? ''
+      .createAudioTranscription(microphoneRecordData)
+      .pipe(
+        switchMap((transcriptionObject) =>
+          this.openaiApiService.createThreadMessage(
+            transcriptionObject.text,
+            threadId
+          )
+        ),
+        switchMap(() => this.openaiApiService.createThreadRun(threadId)),
+        switchMap((runObject) =>
+          this.openaiApiService.getRunAndPolling(threadId, runObject.id)
+        ),
+        switchMap((runObject) =>
+          this.openaiApiService.getThreadMessage(threadId, runObject.id)
+        )
       )
       .subscribe((response) => {
         alert(response);
