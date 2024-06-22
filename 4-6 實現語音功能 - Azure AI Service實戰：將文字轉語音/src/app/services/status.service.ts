@@ -13,19 +13,19 @@ export class StatusService {
   // ReadOnly的播放狀態
   public isAudioPlayingState = this.isAudioPlaying.asReadonly();
 
-  loadingOn() {
+  public loadingOn() {
     this.loadingCount.update((count) => count + 1);
   }
 
-  loadingOff() {
+  public loadingOff() {
     this.loadingCount.update((count) => (count === 0 ? 0 : count - 1));
   }
 
-  startPlayingAudio() {
+  public startPlayingAudio() {
     this.isAudioPlaying.update((oldValue) => true);
   }
 
-  stopPlayingAudio() {
+  public stopPlayingAudio() {
     this.isAudioPlaying.update((oldValue) => false);
   }
 }

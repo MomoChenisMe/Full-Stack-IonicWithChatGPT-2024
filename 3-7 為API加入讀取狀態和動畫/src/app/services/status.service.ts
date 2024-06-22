@@ -9,11 +9,11 @@ export class StatusService {
   // 讀取狀態
   public loadingState = computed(() => this.loadingCount() > 0);
 
-  loadingOn() {
+  public loadingOn() {
     this.loadingCount.update((count) => count + 1);
   }
 
-  loadingOff() {
+  public loadingOff() {
     this.loadingCount.update((count) => (count === 0 ? 0 : count - 1));
   }
 }
