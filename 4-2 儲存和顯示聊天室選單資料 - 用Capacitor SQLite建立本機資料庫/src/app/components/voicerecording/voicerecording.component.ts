@@ -147,7 +147,7 @@ export class VoicerecordingComponent {
   }
 
   // 檢查並請求權限
-  public async checkAndRequestPermissionAsync() {
+  public async checkAndRequestPermissionAsync(): Promise<boolean> {
     const checkPermissionResult = await Microphone.checkPermissions();
     // 如果已經有權限，直接返回true
     if (checkPermissionResult.microphone === 'granted') return true;
