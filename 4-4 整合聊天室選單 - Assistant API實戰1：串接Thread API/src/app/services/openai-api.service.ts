@@ -26,7 +26,7 @@ export class OpenaiApiService {
     return new Blob([byteArray], { type: contentType });
   }
 
-  createAudioTranscription(
+  public createAudioTranscription(
     microphoneRecordData: MicrophoneRecordDataModel
   ): Observable<TranscriptionResponseModel> {
     const blob = this.convertBase64ToBlob(
@@ -44,22 +44,24 @@ export class OpenaiApiService {
   }
 
   // 建立Thread物件
-  createThread(): Observable<ThreadObjectModel> {
+  public createThread(): Observable<ThreadObjectModel> {
     return this.httpClient.post<ThreadObjectModel>('threads', {});
   }
 
-  createThreadAsync(): Promise<ThreadObjectModel> {
+  public createThreadAsync(): Promise<ThreadObjectModel> {
     return firstValueFrom(this.createThread());
   }
 
   // 刪除指定的Thread物件
-  deleteThread(threadId: string): Observable<DeleteThreadResponseModel> {
+  public deleteThread(threadId: string): Observable<DeleteThreadResponseModel> {
     return this.httpClient.delete<DeleteThreadResponseModel>(
       `threads/${threadId}`
     );
   }
 
-  deleteThreadAsync(threadId: string): Promise<DeleteThreadResponseModel> {
+  public deleteThreadAsync(
+    threadId: string
+  ): Promise<DeleteThreadResponseModel> {
     return firstValueFrom(this.deleteThread(threadId));
   }
 }
