@@ -58,9 +58,9 @@ export class HomePage {
     this.openaiApiService
       .createAudioTranscription(microphoneRecordData)
       .pipe(
-        switchMap((transcriptionObject) =>
+        switchMap((audioTranscriptionObject) =>
           this.openaiApiService.createThreadMessage(
-            transcriptionObject.text,
+            audioTranscriptionObject.text,
             threadId
           )
         ),
