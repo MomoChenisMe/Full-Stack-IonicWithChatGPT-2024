@@ -38,7 +38,7 @@ import { OpenaiApiService } from '../services/openai-api.service';
 export class HomePage {
   constructor(private openaiApiService: OpenaiApiService) {}
 
-  onVoiceRecordFinished(audioRecording: AudioRecording) {
+  public onVoiceRecordFinished(audioRecording: AudioRecording) {
     // 串接Audio API
     this.openaiApiService
       .createAudioTranscription({

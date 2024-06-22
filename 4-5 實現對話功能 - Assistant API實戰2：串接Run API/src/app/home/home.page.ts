@@ -43,7 +43,7 @@ export class HomePage {
     private sqlitedbService: SqlitedbService
   ) {}
 
-  onVoiceRecordFinished(audioRecording: AudioRecording) {
+  public onVoiceRecordFinished(audioRecording: AudioRecording) {
     const microphoneRecordData: MicrophoneRecordDataModel = {
       base64String: audioRecording.base64String ?? '',
       mimeType: audioRecording.mimeType ?? 'audio/aac',

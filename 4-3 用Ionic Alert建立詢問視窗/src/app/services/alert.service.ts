@@ -8,7 +8,7 @@ import { ConfirmAlertOptions } from '../models/alert.model';
 export class AlertService {
   constructor(private alertCtrl: AlertController) {}
 
-  async deleteConfirm(opts: ConfirmAlertOptions) {
+  public async deleteConfirmAsync(opts: ConfirmAlertOptions) {
     const alert = await this.alertCtrl.create({
       message: opts.message,
       backdropDismiss: false,

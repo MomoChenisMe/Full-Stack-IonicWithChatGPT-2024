@@ -68,7 +68,7 @@ export class ChatmenuComponent {
 
   // 刪除聊天室
   public async onChatRoomDeleteAsync(chatRoomId: string) {
-    await this.alertService.deleteConfirm({
+    await this.alertService.deleteConfirmAsync({
       message: '確定要刪除聊天室?',
       confirmHandler: async (data) => {
         // 與OpenAI API刪除指定的Thread物件

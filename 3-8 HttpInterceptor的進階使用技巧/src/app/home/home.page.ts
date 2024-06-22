@@ -42,7 +42,7 @@ export class HomePage {
     return new Blob([byteArray], { type: contentType });
   }
 
-  onVoiceRecordFinished(audioRecording: AudioRecording) {
+  public onVoiceRecordFinished(audioRecording: AudioRecording) {
     // 串接Audio API
     const blob = this.convertBase64ToBlob(
       audioRecording.base64String ?? '',
