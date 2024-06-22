@@ -70,7 +70,7 @@ export class VoicerecordingComponent {
   }
 
   // 檢查並請求權限
-  async checkAndRequestPermission() {
+  public async checkAndRequestPermissionAsync() {
     const checkPermissionResult = await Microphone.checkPermissions();
     // 如果已經有權限，直接返回true
     if (checkPermissionResult.microphone === 'granted') return true;
@@ -84,8 +84,8 @@ export class VoicerecordingComponent {
   }
 
   // 開始錄音
-  async onStartRecording() {
-    const hasPermission = await this.checkAndRequestPermission();
+  public async onStartRecording() {
+    const hasPermission = await this.checkAndRequestPermissionAsync();
     if (hasPermission) {
       this.recordingState.set('start');
     } else {
@@ -94,7 +94,7 @@ export class VoicerecordingComponent {
   }
 
   // 停止錄音
-  onStopRecording() {
+  public onStopRecording() {
     this.recordingState.set('stop');
   }
 }

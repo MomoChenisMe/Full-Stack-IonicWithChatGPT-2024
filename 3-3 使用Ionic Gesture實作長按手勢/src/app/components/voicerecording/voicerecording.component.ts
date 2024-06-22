@@ -81,7 +81,7 @@ export class VoicerecordingComponent {
     effect(async () => {
       if (this.recordingButton()) {
         // 檢查並請求權限
-        const hasPermission = await this.checkAndRequestPermission();
+        const hasPermission = await this.checkAndRequestPermissionAsync();
         // 建立長按手勢
         this.longPressGesture = this.gestureCtrl.create(
           {
@@ -104,7 +104,7 @@ export class VoicerecordingComponent {
   }
 
   // 檢查並請求權限
-  async checkAndRequestPermission() {
+  public async checkAndRequestPermissionAsync() {
     const checkPermissionResult = await Microphone.checkPermissions();
     // 如果已經有權限，直接返回true
     if (checkPermissionResult.microphone === 'granted') return true;
