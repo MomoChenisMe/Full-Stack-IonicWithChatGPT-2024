@@ -6,6 +6,7 @@ import {
   SKIP_ADD_OPENAI_BETA_HEADER,
 } from '../httpInterceptors/http.httpcontexttoken';
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,11 @@ import { environment } from 'src/environments/environment';
 export class AzureTtsService {
   constructor(private httpClient: HttpClient) {}
 
-  public textToSpeech(content: string, style: string, styleDegree: number) {
+  public textToSpeech(
+    content: string,
+    style: string,
+    styleDegree: number
+  ): Observable<Blob> {
     const ssmlData = `<speak xmlns="http://www.w3.org/2001/10/synthesis" xmlns:mstts="http://www.w3.org/2001/mstts" version="1.0" xml:lang="en-US"><voice name="en-US-GuyNeural"><mstts:express-as style="${style}" styledegree="${styleDegree}">${content}</mstts:express-as></voice></speak>`;
     return this.httpClient.post(
       'https://eastasia.tts.speech.microsoft.com/cognitiveservices/v1',
