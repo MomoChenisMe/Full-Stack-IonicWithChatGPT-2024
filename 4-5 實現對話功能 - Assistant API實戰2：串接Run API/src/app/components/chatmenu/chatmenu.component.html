@@ -9,7 +9,7 @@
       <div class="border-b border-gray-300">
         <div
           class="mx-2 my-4 p-2 border-2 border-gray-400 rounded-lg bg-white flex flew-row items-center justify-center text-gray-500"
-          (click)="onChatRoomCreate()"
+          (click)="onChatRoomCreateAsync()"
         >
           <ion-icon class="text-xl" name="add-circle-outline"></ion-icon>
           <span>新增聊天室</span>
@@ -30,7 +30,7 @@
       >
         <div
           class="flex-1 flex flex-row items-center"
-          (click)="onChatRoomSelect(item.chatRoomId)"
+          (click)="onChatRoomSelectAsync(item.chatRoomId)"
         >
           <ion-icon
             class="flex-none text-xl"
@@ -40,7 +40,7 @@
         </div>
         <div
           class="flex-none flex items-center p-2"
-          (click)="onChatRoomDelete(item.chatRoomId)"
+          (click)="onChatRoomDeleteAsync(item.chatRoomId)"
         >
           @if (!item.isSelected) {
           <ion-icon

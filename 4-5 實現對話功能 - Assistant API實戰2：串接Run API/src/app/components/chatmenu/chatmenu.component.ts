@@ -53,21 +53,21 @@ export class ChatmenuComponent {
   }
 
   // 選擇聊天室
-  onChatRoomSelect(chatRoomId: string) {
-    this.sqlitedbService.selectChatRoom(chatRoomId);
-    this.menuCtrl.close();
+  public async onChatRoomSelectAsync(chatRoomId: string) {
+    await this.sqlitedbService.selectChatRoom(chatRoomId);
+    await this.menuCtrl.close();
   }
 
   // 建立聊天室
-  async onChatRoomCreate() {
+  public async onChatRoomCreateAsync() {
     // 與OpenAI API建立一個新的Thread物件
     const newThreadObject = await this.openaiApiService.createThreadAsync();
-    this.sqlitedbService.createChatRoom(newThreadObject.id);
-    this.menuCtrl.close();
+    await this.sqlitedbService.createChatRoom(newThreadObject.id);
+    await this.menuCtrl.close();
   }
 
   // 刪除聊天室
-  async onChatRoomDelete(chatRoomId: string) {
+  public async onChatRoomDeleteAsync(chatRoomId: string) {
     await this.alertService.deleteConfirm({
       message: '確定要刪除聊天室?',
       confirmHandler: async (data) => {

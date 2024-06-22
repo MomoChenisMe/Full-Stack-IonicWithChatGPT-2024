@@ -51,19 +51,19 @@ export class ChatmenuComponent {
   }
 
   // 選擇聊天室
-  onChatRoomSelect(chatRoomId: string) {
-    this.sqlitedbService.selectChatRoom(chatRoomId);
-    this.menuCtrl.close();
+  public async onChatRoomSelectAsync(chatRoomId: string) {
+    await this.sqlitedbService.selectChatRoom(chatRoomId);
+    await this.menuCtrl.close();
   }
 
   // 建立聊天室
-  async onChatRoomCreate() {
-    this.sqlitedbService.createChatRoom();
-    this.menuCtrl.close();
+  public async onChatRoomCreateAsync() {
+    await this.sqlitedbService.createChatRoom();
+    await this.menuCtrl.close();
   }
 
   // 刪除聊天室
-  async onChatRoomDelete(chatRoomId: string) {
+  public async onChatRoomDeleteAsync(chatRoomId: string) {
     await this.alertService.deleteConfirm({
       message: '確定要刪除聊天室?',
       confirmHandler: (data) => {
