@@ -48,18 +48,18 @@ export class ChatmenuComponent {
 
   // 選擇聊天室
   public async onChatRoomSelectAsync(chatRoomId: string) {
-    await this.sqlitedbService.selectChatRoom(chatRoomId);
+    await this.sqlitedbService.selectChatRoomAsync(chatRoomId);
     await this.menuCtrl.close();
   }
 
   // 建立聊天室
   public async onChatRoomCreateAsync() {
-    await this.sqlitedbService.createChatRoom();
+    await this.sqlitedbService.createChatRoomAsync();
     await this.menuCtrl.close();
   }
 
   // 刪除聊天室
   public async onChatRoomDeleteAsync(chatRoomId: string) {
-    await this.sqlitedbService.deleteChatRoom(chatRoomId);
+    await this.sqlitedbService.deleteChatRoomAsync(chatRoomId);
   }
 }

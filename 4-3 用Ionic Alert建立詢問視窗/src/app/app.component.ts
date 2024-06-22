@@ -12,13 +12,13 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnDestroy {
   private pauseSubscription: Subscription = this.platform.pause.subscribe(
     () => {
-      this.sqlitedbService.closeSQLiteDB();
+      this.sqlitedbService.closeSQLiteDBAsync();
     }
   );
 
   private resumeSubscription: Subscription = this.platform.resume.subscribe(
     () => {
-      this.sqlitedbService.openSQLiteDB();
+      this.sqlitedbService.openSQLiteDBAsync();
     }
   );
 
@@ -27,17 +27,17 @@ export class AppComponent implements OnDestroy {
     private sqlitedbService: SqlitedbService
   ) {
     // 初始化設定
-    this.initAppSettingAndPlugin();
+    this.initAppSettingAndPluginAsync();
   }
 
   ngOnDestroy(): void {
-    this.sqlitedbService.closeSQLiteDB();
+    this.sqlitedbService.closeSQLiteDBAsync();
     this.pauseSubscription.unsubscribe();
     this.resumeSubscription.unsubscribe();
   }
 
-  private async initAppSettingAndPlugin() {
+  private async initAppSettingAndPluginAsync() {
     // SQLite初始化
-    await this.sqlitedbService.openSQLiteDBAndDoInitialize();
+    await this.sqlitedbService.openSQLiteDBAndDoInitializeAsync();
   }
 }

@@ -54,7 +54,7 @@ export class ChatmenuComponent {
 
   // 選擇聊天室
   public async onChatRoomSelectAsync(chatRoomId: string) {
-    await this.sqlitedbService.selectChatRoom(chatRoomId);
+    await this.sqlitedbService.selectChatRoomAsync(chatRoomId);
     await this.menuCtrl.close();
   }
 
@@ -62,7 +62,7 @@ export class ChatmenuComponent {
   public async onChatRoomCreateAsync() {
     // 與OpenAI API建立一個新的Thread物件
     const newThreadObject = await this.openaiApiService.createThreadAsync();
-    await this.sqlitedbService.createChatRoom(newThreadObject.id);
+    await this.sqlitedbService.createChatRoomAsync(newThreadObject.id);
     await this.menuCtrl.close();
   }
 
@@ -73,7 +73,7 @@ export class ChatmenuComponent {
       confirmHandler: async (data) => {
         // 與OpenAI API刪除指定的Thread物件
         await this.openaiApiService.deleteThreadAsync(chatRoomId);
-        await this.sqlitedbService.deleteChatRoom(chatRoomId);
+        await this.sqlitedbService.deleteChatRoomAsync(chatRoomId);
       },
     });
   }

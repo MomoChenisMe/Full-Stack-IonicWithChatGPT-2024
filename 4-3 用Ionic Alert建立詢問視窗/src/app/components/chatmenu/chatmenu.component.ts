@@ -52,13 +52,13 @@ export class ChatmenuComponent {
 
   // 選擇聊天室
   public async onChatRoomSelectAsync(chatRoomId: string) {
-    await this.sqlitedbService.selectChatRoom(chatRoomId);
+    await this.sqlitedbService.selectChatRoomAsync(chatRoomId);
     await this.menuCtrl.close();
   }
 
   // 建立聊天室
   public async onChatRoomCreateAsync() {
-    await this.sqlitedbService.createChatRoom();
+    await this.sqlitedbService.createChatRoomAsync();
     await this.menuCtrl.close();
   }
 
@@ -68,7 +68,7 @@ export class ChatmenuComponent {
       message: '確定要刪除聊天室?',
       confirmHandler: (data) => {
         console.log(data);
-        this.sqlitedbService.deleteChatRoom(chatRoomId);
+        this.sqlitedbService.deleteChatRoomAsync(chatRoomId);
       },
     });
   }

@@ -13,13 +13,13 @@ import { Subscription } from 'rxjs';
 export class AppComponent implements OnDestroy {
   private pauseSubscription: Subscription = this.platform.pause.subscribe(
     () => {
-      this.sqlitedbService.closeSQLiteDB();
+      this.sqlitedbService.closeSQLiteDBAsync();
     }
   );
 
   private resumeSubscription: Subscription = this.platform.resume.subscribe(
     () => {
-      this.sqlitedbService.openSQLiteDB();
+      this.sqlitedbService.openSQLiteDBAsync();
     }
   );
 
@@ -29,29 +29,29 @@ export class AppComponent implements OnDestroy {
     private openaiApiService: OpenaiApiService
   ) {
     // 初始化設定
-    this.initAppSettingAndPlugin();
+    this.initAppSettingAndPluginAsync();
   }
 
   ngOnDestroy(): void {
-    this.sqlitedbService.closeSQLiteDB();
+    this.sqlitedbService.closeSQLiteDBAsync();
     this.pauseSubscription.unsubscribe();
     this.resumeSubscription.unsubscribe();
   }
 
-  private async initAppSettingAndPlugin() {
+  private async initAppSettingAndPluginAsync() {
     // SQLite初始化
-    await this.sqlitedbService.openSQLiteDBAndDoInitialize();
+    await this.sqlitedbService.openSQLiteDBAndDoInitializeAsync();
     // 檢查是否有初始資料
     const hasLeastOneChatRoom =
-      await this.sqlitedbService.ensureAtLeastOneChatRoom();
+      await this.sqlitedbService.ensureAtLeastOneChatRoomAsync();
     if (hasLeastOneChatRoom) {
       // 與OpenAI API建立一個新的Thread物件
       const newThreadObject = await this.openaiApiService.createThreadAsync();
       // 新增一個聊天室
-      await this.sqlitedbService.createChatRoom(newThreadObject.id);
+      await this.sqlitedbService.createChatRoomAsync(newThreadObject.id);
     } else {
       // 有資料就讀取聊天室資料
-      await this.sqlitedbService.loadChatRoomData();
+      await this.sqlitedbService.loadChatRoomDataAsync();
     }
   }
 }

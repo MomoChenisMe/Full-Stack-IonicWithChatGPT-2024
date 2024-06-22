@@ -32,7 +32,7 @@ export class SqlitedbService {
   // Readonly的Signal
   public chatRoomListReadOnly = this.chatRoomList.asReadonly();
 
-  public async openSQLiteDBAndDoInitialize() {
+  public async openSQLiteDBAndDoInitializeAsync() {
     try {
       // 建立並開啟資料庫連接
       this.db = await this.sqlite.createConnection(
@@ -46,15 +46,15 @@ export class SqlitedbService {
       // 執行聊天室選單資料表的建立
       await this.db.execute(CHATROOM_SCHEMA);
       // 確保至少存在一個聊天室
-      await this.ensureAtLeastOneChatRoom();
+      await this.ensureAtLeastOneChatRoomAsync();
       // 讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error('Error initializing plugin:', error);
     }
   }
 
-  private async ensureAtLeastOneChatRoom() {
+  private async ensureAtLeastOneChatRoomAsync() {
     try {
       // 查詢聊天室選單資料表中的數量
       const chatCount = await this.db.query(
@@ -62,14 +62,14 @@ export class SqlitedbService {
       );
       // 若沒有任何資料，則建立一個初始的聊天室
       if (chatCount.values && chatCount.values[0].count === 0) {
-        await this.createInitialChatRoom();
+        await this.createInitialChatRoomAsync();
       }
     } catch (error) {
       console.error('Error ensuring at least one chat room:', error);
     }
   }
 
-  private async createInitialChatRoom() {
+  private async createInitialChatRoomAsync() {
     try {
       // 建立初始的聊天室
       const query =
@@ -81,7 +81,7 @@ export class SqlitedbService {
     }
   }
 
-  private async loadChatRoomData() {
+  private async loadChatRoomDataAsync() {
     try {
       // 讀取所有聊天室選單資料
       const chatroomDbData = await this.db.query(
@@ -93,7 +93,7 @@ export class SqlitedbService {
     }
   }
 
-  private async updateAllChatRoomDataToUnSelected() {
+  private async updateAllChatRoomDataToUnSelectedAsync() {
     try {
       // 將所有聊天室的選擇狀態更新為未選擇
       await this.db.run('UPDATE CHATROOM SET isSelected = 0');
@@ -102,7 +102,7 @@ export class SqlitedbService {
     }
   }
 
-  public async openSQLiteDB() {
+  public async openSQLiteDBAsync() {
     try {
       if (this.db) {
         await this.db.open();
@@ -112,7 +112,7 @@ export class SqlitedbService {
     }
   }
 
-  public async closeSQLiteDB() {
+  public async closeSQLiteDBAsync() {
     try {
       if (this.db) {
         await this.db.close();
@@ -122,45 +122,45 @@ export class SqlitedbService {
     }
   }
 
-  public async createChatRoom() {
+  public async createChatRoomAsync() {
     try {
       // 將所有聊天室的選擇狀態更新為未選擇
-      await this.updateAllChatRoomDataToUnSelected();
+      await this.updateAllChatRoomDataToUnSelectedAsync();
       // 新增一個新的聊天室並將其設定為已選擇
       const query =
         'INSERT INTO CHATROOM (chatRoomId, name, isSelected) VALUES (?, ?, ?)';
       const values = [Date.now().toString(), '對話聊天室', 1];
       await this.db.run(query, values);
       // 重新讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error('Error creating chat room:', error);
     }
   }
 
-  public async selectChatRoom(chatRoomId: string) {
+  public async selectChatRoomAsync(chatRoomId: string) {
     try {
       // 將所有聊天室的選擇狀態更新為未選擇
-      await this.updateAllChatRoomDataToUnSelected();
+      await this.updateAllChatRoomDataToUnSelectedAsync();
       // 根據chatRoomId將特定聊天室的選擇狀態設定為已選擇
       await this.db.run(
         'UPDATE CHATROOM SET isSelected = 1 WHERE chatRoomId = ?',
         [chatRoomId]
       );
       // 重新讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error('Error selecting chat room:', error);
     }
   }
 
-  public async deleteChatRoom(chatRoomId: string) {
+  public async deleteChatRoomAsync(chatRoomId: string) {
     try {
       // 刪除聊天室
       const deleteChatRoomQuery = 'DELETE FROM CHATROOM WHERE chatRoomId = ?';
       await this.db.run(deleteChatRoomQuery, [chatRoomId]);
       // 重新讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error(
         `Error deleting chat room with chatRoomId: ${chatRoomId}`,

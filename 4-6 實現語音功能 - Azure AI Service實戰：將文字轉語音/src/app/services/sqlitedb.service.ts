@@ -37,7 +37,7 @@ export class SqlitedbService {
       ?.chatRoomId;
   });
 
-  public async openSQLiteDBAndDoInitialize() {
+  public async openSQLiteDBAndDoInitializeAsync() {
     try {
       //建立並開啟資料庫連接
       this.db = await this.sqlite.createConnection(
@@ -55,7 +55,7 @@ export class SqlitedbService {
     }
   }
 
-  public async ensureAtLeastOneChatRoom() {
+  public async ensureAtLeastOneChatRoomAsync() {
     try {
       // 查詢聊天室選單資料表中的數量
       const chatCount = await this.db.query(
@@ -68,7 +68,7 @@ export class SqlitedbService {
     }
   }
 
-  public async loadChatRoomData() {
+  public async loadChatRoomDataAsync() {
     try {
       // 讀取所有聊天室選單資料
       const chatroomDbData = await this.db.query(
@@ -80,7 +80,7 @@ export class SqlitedbService {
     }
   }
 
-  private async updateAllChatRoomDataToUnSelected() {
+  private async updateAllChatRoomDataToUnSelectedAsync() {
     try {
       // 將所有聊天室的選擇狀態更新為未選擇
       await this.db.run('UPDATE CHATROOM SET isSelected = 0');
@@ -89,7 +89,7 @@ export class SqlitedbService {
     }
   }
 
-  public async openSQLiteDB() {
+  public async openSQLiteDBAsync() {
     try {
       if (this.db) {
         await this.db.open();
@@ -99,7 +99,7 @@ export class SqlitedbService {
     }
   }
 
-  public async closeSQLiteDB() {
+  public async closeSQLiteDBAsync() {
     try {
       if (this.db) {
         await this.db.close();
@@ -109,45 +109,45 @@ export class SqlitedbService {
     }
   }
 
-  public async createChatRoom(newChatRoomId: string) {
+  public async createChatRoomAsync(newChatRoomId: string) {
     try {
       // 將所有聊天室的選擇狀態更新為未選擇
-      await this.updateAllChatRoomDataToUnSelected();
+      await this.updateAllChatRoomDataToUnSelectedAsync();
       // 新增一個新的聊天室並將其設定為已選擇
       const query =
         'INSERT INTO CHATROOM (chatRoomId, name, isSelected) VALUES (?, ?, ?)';
       const values = [newChatRoomId, '對話聊天室', 1];
       await this.db.run(query, values);
       // 重新讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error('Error creating chat room:', error);
     }
   }
 
-  public async selectChatRoom(chatRoomId: string) {
+  public async selectChatRoomAsync(chatRoomId: string) {
     try {
       // 將所有聊天室的選擇狀態更新為未選擇
-      await this.updateAllChatRoomDataToUnSelected();
+      await this.updateAllChatRoomDataToUnSelectedAsync();
       // 根據chatRoomId將特定聊天室的選擇狀態設定為已選擇
       await this.db.run(
         'UPDATE CHATROOM SET isSelected = 1 WHERE chatRoomId = ?',
         [chatRoomId]
       );
       // 重新讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error('Error selecting chat room:', error);
     }
   }
 
-  public async deleteChatRoom(chatRoomId: string) {
+  public async deleteChatRoomAsync(chatRoomId: string) {
     try {
       // 刪除聊天室
       const deleteChatRoomQuery = 'DELETE FROM CHATROOM WHERE chatRoomId = ?';
       await this.db.run(deleteChatRoomQuery, [chatRoomId]);
       // 重新讀取聊天室選單資料
-      await this.loadChatRoomData();
+      await this.loadChatRoomDataAsync();
     } catch (error) {
       console.error(
         `Error deleting chat room with chatRoomId: ${chatRoomId}`,

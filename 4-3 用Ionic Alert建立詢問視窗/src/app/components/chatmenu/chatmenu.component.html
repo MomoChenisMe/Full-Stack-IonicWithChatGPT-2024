@@ -18,7 +18,7 @@
     </ion-toolbar>
   </ion-header>
   <ion-content class="ion-padding">
-    @for(item of chatRoomListAsync(); track item) {
+    @for(item of chatRoomList(); track item) {
     <div class="flex flex-col">
       <div
         [class]="
@@ -30,7 +30,7 @@
       >
         <div
           class="flex-1 flex flex-row items-center"
-          (click)="onChatRoomSelect(item.chatRoomId)"
+          (click)="onChatRoomSelectAsync(item.chatRoomId)"
         >
           <ion-icon
             class="flex-none text-xl"
