@@ -21,7 +21,7 @@ export class ChatmenubuttonComponent {
   }
 
   // 開啟聊天室選單
-  onOpenCloseMenuClick() {
+  public onOpenCloseMenuClick() {
     this.menuCtrl.open('chat-menu');
   }
 }
