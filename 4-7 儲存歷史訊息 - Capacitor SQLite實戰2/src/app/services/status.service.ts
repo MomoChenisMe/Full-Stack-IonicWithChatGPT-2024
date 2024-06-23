@@ -9,9 +9,9 @@ export class StatusService {
   // 讀取狀態
   public loadingState = computed(() => this.loadingCount() > 0);
   // 播放狀態
-  private isAudioPlaying = signal<boolean>(false);
+  private audioPlaying = signal<boolean>(false);
   // ReadOnly的播放狀態
-  public isAudioPlayingState = this.isAudioPlaying.asReadonly();
+  public audioPlayingState = this.audioPlaying.asReadonly();
 
   public loadingOn() {
     this.loadingCount.update((count) => count + 1);
@@ -22,10 +22,10 @@ export class StatusService {
   }
 
   public startPlayingAudio() {
-    this.isAudioPlaying.update((oldValue) => true);
+    this.audioPlaying.update((oldValue) => true);
   }
 
   public stopPlayingAudio() {
-    this.isAudioPlaying.update((oldValue) => false);
+    this.audioPlaying.update((oldValue) => false);
   }
 }

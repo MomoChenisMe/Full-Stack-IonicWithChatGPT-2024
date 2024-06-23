@@ -81,7 +81,7 @@ export class VoicerecordingComponent {
   // 讀取狀態
   public loadingState = this.statusService.loadingState;
   // 播放狀態
-  public isAudioPlayingState = this.statusService.isAudioPlayingState;
+  public audioPlayingState = this.statusService.audioPlayingState;
 
   constructor(
     private gestureCtrl: GestureController,
@@ -90,7 +90,7 @@ export class VoicerecordingComponent {
   ) {
     addIcons({ micOutline, volumeHighOutline });
     effect(() => {
-      if (this.loadingState() || this.isAudioPlayingState()) {
+      if (this.loadingState() || this.audioPlayingState()) {
         this.longPressGesture?.enable(false);
       } else {
         this.longPressGesture?.enable();
