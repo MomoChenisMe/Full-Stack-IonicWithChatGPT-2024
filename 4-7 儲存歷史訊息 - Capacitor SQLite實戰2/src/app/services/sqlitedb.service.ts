@@ -177,7 +177,7 @@ export class SqlitedbService {
 
   public async deleteChatRoomAsync(chatRoomId: string) {
     try {
-      // 刪除聊天室的對話內容
+      // 刪除聊天室的歷史訊息
       const deleteChatHistoryQuery =
         'DELETE FROM CHATHISTORY WHERE chatRoomId = ?';
       await this.db.run(deleteChatHistoryQuery, [chatRoomId]);
