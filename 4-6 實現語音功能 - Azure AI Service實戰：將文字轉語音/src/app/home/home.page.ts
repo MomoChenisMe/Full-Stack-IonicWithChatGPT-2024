@@ -18,7 +18,7 @@ import { OpenaiApiService } from '../services/openai-api.service';
 import { SqlitedbService } from '../services/sqlitedb.service';
 import { switchMap } from 'rxjs';
 import { MicrophoneRecordDataModel } from '../models/audio.model';
-import { StatusService } from '../services/status.service';
+import { ReplayaudioComponent } from '../components/replayaudio/replayaudio.component';
 
 @Component({
   selector: 'app-home',
@@ -37,14 +37,16 @@ import { StatusService } from '../services/status.service';
     VoicerecordingComponent,
     ChatmenubuttonComponent,
     ChatmenuComponent,
+    ReplayaudioComponent,
   ],
 })
 export class HomePage {
+  audioFile: Blob | null = null;
+
   constructor(
     private openaiApiService: OpenaiApiService,
     private sqlitedbService: SqlitedbService,
-    private azureTtsService: AzureTtsService,
-    private statusService: StatusService
+    private azureTtsService: AzureTtsService
   ) {}
 
   public onVoiceRecordFinished(audioRecording: AudioRecording) {
@@ -80,18 +82,7 @@ export class HomePage {
         )
       )
       .subscribe((response) => {
-        this.playAudio(response);
+        this.audioFile = response;
       });
-  }
-
-  private playAudio(audioBlob: Blob) {
-    this.statusService.startPlayingAudio();
-    let url = URL.createObjectURL(audioBlob);
-    const audio = new Audio(url);
-    audio.load();
-    audio.onended = () => {
-      this.statusService.stopPlayingAudio();
-    };
-    audio.play();
   }
 }

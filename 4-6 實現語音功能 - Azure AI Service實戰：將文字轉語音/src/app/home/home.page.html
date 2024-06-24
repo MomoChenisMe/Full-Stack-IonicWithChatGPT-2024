@@ -18,10 +18,17 @@
       class="flex-none flex flex-row justify-between items-center pb-10 relative"
     >
       <div class="flex-grow">
+        <!-- 重播按鈕 -->
+        <app-replayaudio [audioFile]="audioFile"></app-replayaudio>
+      </div>
+      <div class="flex-grow">
         <!-- 錄音按鈕 -->
         <app-voicerecording
           (voiceRecordFinished)="onVoiceRecordFinished($event)"
         ></app-voicerecording>
+      </div>
+      <div class="flex-grow">
+        <div class="w-14"></div>
       </div>
     </div>
   </div>
