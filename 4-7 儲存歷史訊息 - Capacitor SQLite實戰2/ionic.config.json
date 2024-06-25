@@ -1,7 +1,0 @@
-{
-  "name": "AI_Conversation_APP",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular-standalone"
-}
