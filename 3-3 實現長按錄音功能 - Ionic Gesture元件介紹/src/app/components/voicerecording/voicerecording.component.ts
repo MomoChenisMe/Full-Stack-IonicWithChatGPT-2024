@@ -16,11 +16,16 @@ import {
   startWith,
   shareReplay,
 } from 'rxjs';
-import { IonIcon, IonRippleEffect } from '@ionic/angular/standalone';
+import {
+  IonIcon,
+  IonRippleEffect,
+  Gesture,
+  GestureController,
+  GestureDetail,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { micOutline } from 'ionicons/icons';
 import { Microphone } from '@mozartec/capacitor-microphone';
-import { Gesture, GestureController, GestureDetail } from '@ionic/angular';
 
 @Component({
   selector: 'app-voicerecording',

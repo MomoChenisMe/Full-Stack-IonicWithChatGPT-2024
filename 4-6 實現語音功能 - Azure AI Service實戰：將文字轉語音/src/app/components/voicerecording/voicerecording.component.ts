@@ -17,17 +17,18 @@ import {
   startWith,
   shareReplay,
 } from 'rxjs';
-import { IonIcon, IonRippleEffect } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { micOutline, volumeHighOutline } from 'ionicons/icons';
-import { AudioRecording, Microphone } from '@mozartec/capacitor-microphone';
 import {
+  IonIcon,
+  IonRippleEffect,
   Gesture,
   GestureController,
   GestureDetail,
   Animation,
   AnimationController,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { micOutline, volumeHighOutline } from 'ionicons/icons';
+import { AudioRecording, Microphone } from '@mozartec/capacitor-microphone';
 import { StatusService } from 'src/app/services/status.service';
 
 @Component({

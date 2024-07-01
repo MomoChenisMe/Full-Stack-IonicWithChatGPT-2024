@@ -16,17 +16,18 @@ import {
   startWith,
   shareReplay,
 } from 'rxjs';
-import { IonIcon, IonRippleEffect } from '@ionic/angular/standalone';
-import { addIcons } from 'ionicons';
-import { micOutline } from 'ionicons/icons';
-import { Microphone } from '@mozartec/capacitor-microphone';
 import {
+  IonIcon,
+  IonRippleEffect,
   Gesture,
   GestureController,
   GestureDetail,
   Animation,
   AnimationController,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
+import { addIcons } from 'ionicons';
+import { micOutline } from 'ionicons/icons';
+import { Microphone } from '@mozartec/capacitor-microphone';
 import { Haptics, ImpactStyle } from '@capacitor/haptics';
 
 @Component({
