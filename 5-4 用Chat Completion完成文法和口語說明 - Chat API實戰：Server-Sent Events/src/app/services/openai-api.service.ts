@@ -158,7 +158,7 @@ export class OpenaiApiService {
     temperature: number = 1
   ) {
     const requestBody: ChatRequestModel = {
-      model: 'gpt-4o',
+      model: 'gpt-4o-mini',
       messages: chatMessages,
       temperature: temperature,
       stream: true,
